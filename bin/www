@@ -1,11 +1,39 @@
 #!/usr/bin/env node
-var debug = require('debug')('evenster');
+var logger = require('log'), log = new logger('debug');
 var app = require('../app');
+var udpServer = require('dgram');
 
+var UDP_PORT = 41234; // TODO: move to config
+
+/* API-server (reseful services) */
 app.set('host', process.env.IP   || process.env.OPENSHIFT_NODEJS_IP   || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000');
 
-var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + app.set('host') + ':' + app.set('port'));
-  console.log('Express server listening on port ' + app.set('host') + ':' + app.set('port'));
+var apiServer = app.listen(app.get('port'), function() {
+  log.info('api server listening on port ' + app.set('host') + ':' + app.set('port'));
+});
+
+/* UDP-server (broadcast) */
+var socket = udpServer.createSocket("udp4");
+
+socket.on("error", function (err) {
+  log.info("udp server error:\n" + err.stack);
+  socket.close();
+});
+
+socket.on("message", function (msg, rinfo) {
+  log.info("udp server received: '" + msg + "' from " + rinfo.address + ":" + rinfo.port);
+});
+
+socket.on("listening", function () {
+  var address = socket.address();
+  log.info("udp server listening " + address.address + ":" + address.port);
+});
+
+socket.bind(UDP_PORT);
+
+var message = new Buffer("Some bytes");
+var client = udpServer.createSocket("udp4");
+client.send(message, 0, message.length, 41234, "localhost", function(err, bytes) {
+    client.close();
 });
