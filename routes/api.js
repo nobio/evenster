@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* Here goes the API */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'XExpress' });
+  res.send('respond with a resource');
 });
 
 module.exports = router;
