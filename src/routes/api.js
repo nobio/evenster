@@ -1,4 +1,5 @@
 var express = require('express');
+var udpClient = require('../net/udp-client');
 var router = express.Router();
 
 module.exports = router;
@@ -8,7 +9,8 @@ router.get('/', function(req, res) {
   res.send("'index', { title: 'XExpress' }");
 });
 
-router.get('/test', function(req, res) {
-  res.send(500, 'So ein Mist');
+router.get('/ping', function(req, res) {
+  udpClient.ping();
+  res.send(200);
 });
 
