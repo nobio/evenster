@@ -9,9 +9,3 @@ app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000')
 var apiServer = app.listen(app.get('port'), function() {
   log.info('api server listening on port ' + app.set('host') + ':' + app.set('port'));
 });
-
-require('../src/net/udp-server.js');
-
-var udpClient = require('../src/net/udp-client.js');
-log.error(udpClient);
-udpClient.sendAsync('Hi Schernoobio');
