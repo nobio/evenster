@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-var logger = require('log'), log = new logger('debug');
 var config = require('../../src/conf/config.js');
+var logger = require('log'), log = new logger(config.logger.level);
 var udpServer = require('dgram');
+var udpClient = require('./udp-client');
+
 
 /* UDP-server (broadcast) */
 var socket = udpServer.createSocket("udp4");
@@ -11,8 +13,14 @@ socket.on("error", function (err) {
   socket.close();
 });
 
-socket.on("message", function (msg, rinfo) {
-  log.info("udp server received: '" + msg + "' from " + rinfo.address + ":" + rinfo.port);
+socket.on("message", function (sMsg, rinfo) {
+  log.info("udp server received: '" + sMsg + "' from " + rinfo.address + ":" + rinfo.port);
+  var msg = JSON.parse(sMsg);
+  if(msg && msg.type == config.udp.message.type.ping) {
+    udpClient.pong();
+  } else if(msg && msg.type == config.udp.message.type.pong) {
+    // nothing to do
+  } 
 });
 
 socket.on("listening", function () {

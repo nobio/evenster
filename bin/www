@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-var logger = require('log'), log = new logger('debug');
+var config = require('../src/conf/config.js');
+var logger = require('log'), log = new logger(config.logger.level);
 var app = require('../app');
 
 /* API-server (reseful services) */

@@ -1,24 +1,23 @@
-var assert = require("assert")
+#!/usr/bin/env node
+var config = require('..//src/conf/config.js');
+var logger = require('log'), log = new logger(config.logger.level);
+var assert = require("assert");
 var udpClient = require('../src/net/udp-client');
 
-
-describe('Array', function() {
-	describe('#indexOfasdasdasd()', function() {
-    	it('should return -1 when the value is not present', function(){
-      		assert.equal(-1, [1,2,3].indexOf(5));
-      		assert.equal(-1, [1,2,3].indexOf(0));
-    	});
-  	})
-});
-
-describe('UDP Client', function(){
-  describe('#ping()', function(){
-    it('should be called without any error', function() {
+describe('UDP Client', function() {
+  describe('#ping()', function() {
+    it('sync ping should return no return value', function() {
     	var httpcode = udpClient.ping();
-    	console.log(httpcode);
-    	assert.equal(200, httpcode);
+    	assert.equal(undefined, httpcode);
     });
-  })
+    it('async ping should return return no error (code=200)', function(done) {
+    	udpClient.ping(function(result) {
+      	assert.equal('0', result.errorcode);
+      	assert.equal('', result.message);
+        done();
+    	});
+    });
+  });
 });
 
 

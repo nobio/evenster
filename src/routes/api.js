@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+var config = require('../../src/conf/config.js');
+var logger = require('log'), log = new logger(config.logger.level);
+
 var express = require('express');
 var udpClient = require('../net/udp-client');
 var router = express.Router();
@@ -10,7 +14,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/ping', function(req, res) {
-  udpClient.ping();
-  res.send(200);
+  udpClient.ping(function(result) {
+    res.send(result);
+  });
 });
 
