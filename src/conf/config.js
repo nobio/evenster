@@ -2,6 +2,12 @@ module.exports = {
   "udp": {
 		"server": {
 			"port": "41235"
+		},
+		"message": {
+			"type": {
+				"ping": "PING",
+				"pong": "PONG"
+			}
 		}
 	},
 	"logger": {

@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+//var logger = require('log'), log = new logger('debug');
+
+var udpClient = require('../src/net/udp-client');
+udpClient.sendAsync('Test Message 123456789ÄÖÜäöüß!"§$%%%&/()=?#\'');
+udpClient.ping();
+

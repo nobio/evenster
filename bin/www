@@ -10,8 +10,5 @@ var apiServer = app.listen(app.get('port'), function() {
   log.info('api server listening on port ' + app.set('host') + ':' + app.set('port'));
 });
 
-require('../src/net/udp-server.js');
-
-var udpClient = require('../src/net/udp-client.js');
-log.error(udpClient);
-udpClient.sendAsync('Hi Schernoobio');
+// start the udp server
+require('../src/net/udp-server');
