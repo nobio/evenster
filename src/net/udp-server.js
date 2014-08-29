@@ -9,21 +9,21 @@ var queue = new Array();
 var socket = multicastServer.createSocket("udp4");
 
 socket.on("error", function (err) {
-  log.info("udp server error:\n" + err.stack);
-  socket.close();
+	log.info("udp server error:\n" + err.stack);
+	socket.close();
 });
 
 socket.on("message", function (sMsg, rinfo) {
-  log.info("udp server received: '" + sMsg + "' from " + rinfo.address + ":" + rinfo.port);
-  var msg = JSON.parse(sMsg);
+	log.info("udp server received: '" + sMsg + "' from " + rinfo.address + ":" + rinfo.port);
+	var msg = JSON.parse(sMsg);
 
-  if(msg && msg.type == config.udp.message.type.ping) {
-    udpClient.pong();
-  } else if(msg && msg.type == config.udp.message.type.pong) {
-    // nothing to do
-  }
-  
-  queue.push(msg); 
+	if(msg && msg.type == config.udp.message.type.ping) {
+		udpClient.pong();
+	} else if(msg && msg.type == config.udp.message.type.pong) {
+		// nothing to do
+	}
+	
+	queue.push(msg); 
 });
 
 socket.on("listening", function () {

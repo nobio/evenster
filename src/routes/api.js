@@ -10,12 +10,12 @@ module.exports = router;
 
 /* Here goes the API */
 router.get('/', function(req, res) {
-  res.send("'index', { title: 'XExpress' }");
+	res.send("'index', { title: 'XExpress' }");
 });
 
 router.get('/ping', function(req, res) {
-  udpClient.ping(function(result) {
-    res.send(result);
-  });
+	udpClient.ping(function(result) {
+		res.send(result);
+	});
 });
 

@@ -1,5 +1,5 @@
 module.exports = {
-  "udp": {
+	"udp": {
 		"server": {
 			"port": "17501",
 			"host": "224.0.0.55",
