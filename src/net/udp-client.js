@@ -51,7 +51,7 @@ module.exports = {
 		});
 	},
 	
-	pong: function ping(callback) {
+	pong: function pong(callback) {
 		this.sendAsync({'type':config.udp.message.type.pong, 'message':''}, function(err) {
 			if(callback) {
 				if(err) {
