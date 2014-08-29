@@ -2,23 +2,40 @@
 var config = require('../../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
 
-var udpServer = require('dgram');
-var socket = udpServer.createSocket("udp4");
+var multicastServer = require('dgram');
+var udpServer = require('./udp-server')
+var socket = multicastServer.createSocket("udp4");
 
 
 /* export some functions typically for a udp client */
 module.exports = {
 	
-	sendAsync: function send(msg, callback) {
+	sendAsync: function sendAsync(msg, callback) {
 		var sMsg = JSON.stringify(msg);
 		var message = new Buffer(sMsg);
 
 		log.debug('Message to be sent: %s (on multicast address %s:%s)', sMsg, config.udp.server.host, config.udp.server.port);
 
-		var client = udpServer.createSocket("udp4");
+		var client = multicastServer.createSocket("udp4");
 		client.send(message, 0, message.length, parseInt(config.udp.server.port), config.udp.server.host, function(err, bytes) {
 			client.close();
 			callback(err);
+		});
+	},
+	
+	sendSync: function sendSync(msg, callback) {
+		var sMsg = JSON.stringify(msg);
+		var message = new Buffer(sMsg);
+
+		log.debug('Message to be sent: %s (on multicast address %s:%s)', sMsg, config.udp.server.host, config.udp.server.port);
+
+		var client = multicastServer.createSocket("udp4");
+		client.send(message, 0, message.length, parseInt(config.udp.server.port), config.udp.server.host, function(err, bytes) {
+			client.close();
+			sleep(300, function() {
+				log.debug(udpServer.getQueue());
+				callback(err);			
+			});
 		});
 	},
 	
@@ -47,3 +64,9 @@ module.exports = {
 	},
 	
 };
+
+function sleep(millis, callback) {
+    setTimeout(function() {
+    	callback();
+    }, millis);
+}
