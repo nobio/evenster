@@ -24,9 +24,13 @@ socket.on("message", function (sMsg, rinfo) {
 });
 
 socket.on("listening", function () {
-  var address = socket.address();
-  log.info("udp server listening " + address.address + ":" + address.port);
+	socket.setBroadcast(true)
+	socket.setMulticastTTL(128); 
+	socket.addMembership(config.udp.server.host);
+	var address = socket.address();
+	log.info("udp server listening " + address.address + ":" + address.port);
 });
 
-socket.bind(config.udp.server.port);
+log.info("trying to bind udp server to " + config.udp.server.host + ":" + parseInt(config.udp.server.port));
+socket.bind(parseInt(config.udp.server.port), config.udp.server.host);
 
