@@ -20,7 +20,9 @@ describe('UDP Client', function() {
 				done();
 			});
 		});
-		
+	});
+			
+	describe('#message queue', function() {
 		it('after sending a ping we expect at least one ping message in servers message queue', function(done) {
 			udpClient.ping(function(result) {
 				sleep(500, function() {
