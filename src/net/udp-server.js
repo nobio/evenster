@@ -45,8 +45,16 @@ module.exports = {
 		return queue;
 	},
 		
-	popMessage: function popMessage() {
+	pushMessage: function pushMessage(obj) {
+		queue.push(obj);	
+	},
+	
+	shift: function shift() { // FIFO
 		return queue.shift();
+	},
+		
+	pop: function pop() { // LIFO
+		return queue.pop();
 	},
 		
 }
