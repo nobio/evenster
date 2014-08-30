@@ -41,7 +41,7 @@ socket.bind(parseInt(config.udp.server.port), config.udp.server.host);
 
 /* export some functions typically for a udp client */
 module.exports = {
-	getQueue: function getMessages() {
+	getMessages: function getMessages() {
 		return queue;
 	},
 		

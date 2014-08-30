@@ -4,6 +4,7 @@ var logger = require('log'), log = new logger(config.logger.level);
 
 var express = require('express');
 var udpClient = require('../net/udp-client');
+var udpServer = require('../net/udp-server');
 var router = express.Router();
 
 module.exports = router;
@@ -23,5 +24,16 @@ router.get('/pong', function(req, res) {
 	udpClient.pong(function(result) {
 		res.send(result);
 	});
+});
+
+router.get('/advertise', function(req, res) {
+	udpClient.advertise(function(result) {
+		res.send(result);
+	});
+});
+
+router.get('/messages', function(req, res) {
+	var msgs = udpServer.getMessages();
+	res.send(msgs);
 });
 

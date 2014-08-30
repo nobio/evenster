@@ -21,8 +21,12 @@ module.exports = {
 		});
 	},
 	
+	/**
+	 * functions without sending any payload except the 
+	 * message type: ping, pong, advertise
+	 */ 
 	ping: function ping(callback) {
-		this.sendAsync({'type':config.udp.message.type.ping, 'message':''}, function(err) {
+		this.sendAsync({'type':config.udp.message.type.ping}, function(err) {
 			if(callback) {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
@@ -34,7 +38,7 @@ module.exports = {
 	},
 	
 	pong: function pong(callback) {
-		this.sendAsync({'type':config.udp.message.type.pong, 'message':''}, function(err) {
+		this.sendAsync({'type':config.udp.message.type.pong}, function(err) {
 			if(callback) {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
@@ -45,8 +49,12 @@ module.exports = {
 		});
 	},
 	
+	/**
+	 * get an advertisment object that declares everything the event client
+	 * needs to connect to this event server
+	 */ 
 	advertise: function advertise(callback) {
-		this.sendAsync({'type':config.udp.message.type.advertise, 'message':''}, function(err) {
+		this.sendAsync({'type':config.udp.message.type.advertise}, function(err) {
 			if(callback) {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
