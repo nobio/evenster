@@ -31,7 +31,7 @@ module.exports = {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
 				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': ''});
+					callback({'errorcode': '0', 'message': 'ok'});
 				}
 			}
 		});
@@ -43,7 +43,7 @@ module.exports = {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
 				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': ''});
+					callback({'errorcode': '0', 'message': 'ok'});
 				}
 			}
 		});
@@ -59,7 +59,7 @@ module.exports = {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
 				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': ''});
+					callback({'errorcode': '0', 'message': 'ok'});
 				}
 			}
 		});
