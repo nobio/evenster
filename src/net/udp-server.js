@@ -18,7 +18,9 @@ socket.on("message", function (sMsg, rinfo) {
 	var msg = JSON.parse(sMsg);
 
 	if(msg && msg.type == config.udp.message.type.ping) {
-		udpClient.pong();
+		udpClient.pong(function(result) {
+			log.info(result);	
+		});
 	} else if(msg && msg.type == config.udp.message.type.pong) {
 		// nothing to do
 	}

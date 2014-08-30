@@ -19,3 +19,9 @@ router.get('/ping', function(req, res) {
 	});
 });
 
+router.get('/pong', function(req, res) {
+	udpClient.pong(function(result) {
+		res.send(result);
+	});
+});
+
