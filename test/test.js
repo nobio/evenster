@@ -124,7 +124,7 @@ describe('#advertise', function() {
 		sleep(100, function() { // give the server the chance to fetch the messages
 			var messages = udpServer.getMessagesByType(config.udp.message.type.advertisement);
 			log.debug("Advertisement messages found: %s", JSON.stringify(messages));
-			assert.equal(1, messages.length);
+			assert.ok(1 <= messages.length);
 			var adv = messages[0];
 			assert.equal(adv.type, config.udp.message.type.advertisement);
 			assert.equal(adv.advertisement.api_server.host, '0.0.0.0');
