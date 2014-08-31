@@ -2,6 +2,7 @@
 var config = require('../../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
 var multicastServer = require('dgram');
+var ip = require('ip');
 var udpClient = require('./udp-client');
 var queue = new Array();
 
@@ -74,7 +75,6 @@ module.exports = {
 	pop: function pop() { // LIFO
 		return queue.pop();
 	},
-		
 }
 
 /* ========================================================== */
@@ -88,18 +88,14 @@ function hasTypePing(element) {
 	return element.type == config.udp.message.type.ping;
 }
 function getAdvertisement() {
-	log.debug("process.env.IP=%s", process.env.IP);
-	log.debug("process.env.OPENSHIFT_NODEJS_IP=%s", process.env.OPENSHIFT_NODEJS_IP);
-	log.debug("process.env.POST=%s", process.env.PORT);
-	log.debug("process.env.OPENSHIFT_NODEJS_PORT=%s", process.env.OPENSHIFT_NODEJS_PORT);
 	var advert = 
 		{
 			type: config.udp.message.type.advertisement, 
 			advertisement: 
 				{api_server: 
 					{
-						host: process.env.IP || process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0", 
-						port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || "8080"
+						host: process.env.IP || process.env.OPENSHIFT_NODEJS_IP || ip.address(),
+						port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000'
 					}
 				}
 		};

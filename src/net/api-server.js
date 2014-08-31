@@ -14,5 +14,5 @@ app.set('host', process.env.IP   || process.env.OPENSHIFT_NODEJS_IP   || ip.addr
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000');
 
 var apiServer = app.listen(app.get('port'), function() {
-  log.info('api server listening on port ' + app.set('host') + ':' + app.set('port'));
+  log.info('api server listening on port ' + app.get('host') + ':' + app.get('port'));
 });
