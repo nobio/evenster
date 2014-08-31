@@ -126,9 +126,9 @@ describe('#advertise', function() {
 			log.debug("Advertisement messages found: %s", JSON.stringify(messages));
 			assert.ok(1 <= messages.length);
 			var adv = messages[0];
-			assert.equal(adv.type, config.udp.message.type.advertisement);
-			assert.equal(adv.advertisement.api_server.host, '0.0.0.0');
-			assert.equal(adv.advertisement.api_server.port, '8080');
+			assert.equal(config.udp.message.type.advertisement, adv.type);
+			assert.notEqual(undefined, adv.advertisement.api_server.host);
+			assert.notEqual(undefined, adv.advertisement.api_server.port);
 			
 			done();
 		});
