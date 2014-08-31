@@ -17,9 +17,11 @@ socket.on("message", function (sMsg, rinfo) {
 	log.info("udp server received: '" + sMsg + "' from " + rinfo.address + ":" + rinfo.port);
 	var msg = JSON.parse(sMsg);
 
-	if(msg && msg.type == config.udp.message.type.ping) {
+	if(msg && msg.type == config.udp.message.type.advertise) {
+		return getAdvertisement();
+	} else if(msg && msg.type == config.udp.message.type.ping) {
 		udpClient.pong(function(result) {
-			log.info(result);	
+			log.debug(result);	
 		});
 	} else if(msg && msg.type == config.udp.message.type.pong) {
 		// nothing to do
@@ -45,6 +47,18 @@ module.exports = {
 		return queue;
 	},
 		
+	getMessagesByType: function getMessagesByType(type) {
+		if(type == config.udp.message.type.advertisement) {
+			return queue.filter(hasTypeAdvertisement);
+		} else if(type == config.udp.message.type.advertise) {
+			return queue.filter(hasTypeAdvertise);
+		} else if(type == config.udp.message.type.ping) {
+			return queue.filter(hasTypePing);
+		} else {
+			return new Array();
+		}
+	},
+		
 	pushMessage: function pushMessage(obj) {
 		queue.push(obj);	
 	},
@@ -57,4 +71,18 @@ module.exports = {
 		return queue.pop();
 	},
 		
+}
+
+/* ========================================================== */
+function hasTypeAdvertisement(element) {
+	return element.type == config.udp.message.type.advertisement;
+}
+function hasTypeAdvertise(element) {
+	return element.type == config.udp.message.type.advertise;
+}
+function hasTypePing(element) {
+	return element.type == config.udp.message.type.ping;
+}
+function getAdvertisement() {
+	
 }

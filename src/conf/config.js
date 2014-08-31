@@ -6,8 +6,10 @@ module.exports = {
 		},
 		"message": {
 			"type": {
-				"ping": "PING",
-				"pong": "PONG"
+				"ping"          : "PING",
+				"pong"          : "PONG",
+				"advertise"     : "ADVERTISE",
+				"advertisement" : "ADVERTISEMENT"
 			}
 		}
 	},
