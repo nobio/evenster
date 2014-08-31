@@ -92,12 +92,25 @@ function getAdvertisement() {
 		{
 			type: config.udp.message.type.advertisement, 
 			advertisement: 
-				{api_server: 
+				{
+					api_server: 
 					{
 						host: util.api_host(),
 						port: util.api_port()
-					}
-				}
+					},
+					endpoints:
+					[
+						{
+							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/ping"
+						},
+						{
+							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/messages"
+						},
+						{
+							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/advertise"
+						},
+					]
+				},
 		};
 	return advert;
 }
