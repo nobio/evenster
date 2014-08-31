@@ -2,7 +2,7 @@
 var config = require('../../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
 var multicastServer = require('dgram');
-var ip = require('ip');
+var util = require('../util');
 var udpClient = require('./udp-client');
 var queue = new Array();
 
@@ -94,8 +94,8 @@ function getAdvertisement() {
 			advertisement: 
 				{api_server: 
 					{
-						host: process.env.IP || process.env.OPENSHIFT_NODEJS_IP || ip.address(),
-						port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000'
+						host: util.api_host(),
+						port: util.api_port()
 					}
 				}
 		};
