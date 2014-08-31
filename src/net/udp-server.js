@@ -18,7 +18,11 @@ socket.on("message", function (sMsg, rinfo) {
 	var msg = JSON.parse(sMsg);
 
 	if(msg && msg.type == config.udp.message.type.advertise) {
-		return getAdvertisement();
+		udpClient.advertisement(getAdvertisement(), function(result) {
+			log.debug(result);	
+		});
+	} else if (msg && msg.type == config.udp.message.type.advertisement) {
+		// nothing to do
 	} else if(msg && msg.type == config.udp.message.type.ping) {
 		udpClient.pong(function(result) {
 			log.debug(result);	
@@ -84,5 +88,20 @@ function hasTypePing(element) {
 	return element.type == config.udp.message.type.ping;
 }
 function getAdvertisement() {
-	
+	log.debug("process.env.IP=%s", process.env.IP);
+	log.debug("process.env.OPENSHIFT_NODEJS_IP=%s", process.env.OPENSHIFT_NODEJS_IP);
+	log.debug("process.env.POST=%s", process.env.PORT);
+	log.debug("process.env.OPENSHIFT_NODEJS_PORT=%s", process.env.OPENSHIFT_NODEJS_PORT);
+	var advert = 
+		{
+			type: config.udp.message.type.advertisement, 
+			advertisement: 
+				{api_server: 
+					{
+						host: process.env.IP || process.env.OPENSHIFT_NODEJS_IP, 
+						port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT
+					}
+				}
+		};
+	return advert;
 }

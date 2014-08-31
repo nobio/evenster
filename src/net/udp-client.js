@@ -50,11 +50,27 @@ module.exports = {
 	},
 	
 	/**
-	 * get an advertisment object that declares everything the event client
+	 * request an advertisment object that declares everything the event client
 	 * needs to connect to this event server
 	 */ 
 	advertise: function advertise(callback) {
 		this.sendAsync({'type':config.udp.message.type.advertise}, function(err) {
+			if(callback) {
+				if(err) {
+					callback({'errorcode': '500', 'message': err});
+				} else if (callback && !err) {
+					callback({'errorcode': '0', 'message': 'ok'});
+				}
+			}
+		});
+	},
+	
+	/**
+	 * responsd to an advertisment with an advertisement object that declares everything the event client
+	 * needs to connect to this event server
+	 */ 
+	advertisement: function advertisement(advertisement, callback) {
+		this.sendAsync(advertisement, function(err) {
 			if(callback) {
 				if(err) {
 					callback({'errorcode': '500', 'message': err});
