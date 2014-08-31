@@ -4,6 +4,7 @@ var logger = require('log'), log = new logger(config.logger.level);
 var assert = require("assert");
 var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
+var util = require("../src/util");
 
 describe('#ping()', function() {
 	it('sync ping should return no return value', function(done) {
@@ -24,7 +25,7 @@ describe('#ping()', function() {
 describe('#message queue', function() {
 	it('after sending a ping we expect at least one ping message in servers message queue', function(done) {
 		udpClient.ping(function(result) {
-			sleep(500, function() {
+			util.sleep(500, function() {
 				var found, msg;
 				var messages = udpServer.getMessages();
 				for (var i = 0; i < messages.length; i++) {
@@ -105,7 +106,7 @@ describe('#advertise', function() {
 		udpClient.ping();
 		udpClient.ping();
 
-		sleep(500, function() { // give the server the chance to fetch the messages
+		util.sleep(500, function() { // give the server the chance to fetch the messages
 			var messages = udpServer.getMessagesByType(config.udp.message.type.advertise);
 			log.debug("Advertise messages found: %s", JSON.stringify(messages));
 			assert.equal(2, messages.length)
@@ -121,7 +122,7 @@ describe('#advertise', function() {
 	it('advertise call should generate an advertisement reply', function(done) {
 		udpServer.getMessages().length = 0; // reset the queue
 		udpClient.advertise();
-		sleep(100, function() { // give the server the chance to fetch the messages
+		util.sleep(100, function() { // give the server the chance to fetch the messages
 			var messages = udpServer.getMessagesByType(config.udp.message.type.advertisement);
 			log.debug("Advertisement messages found: %s", JSON.stringify(messages));
 			assert.ok(1 <= messages.length);
@@ -136,10 +137,3 @@ describe('#advertise', function() {
 
 });
 		
-
-/* ================================================================ */
-function sleep(millis, callback) {
-    setTimeout(function() {
-    	callback();
-    }, millis);
-}

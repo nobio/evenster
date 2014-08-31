@@ -17,6 +17,9 @@ socket.on("error", function (err) {
 socket.on("message", function (sMsg, rinfo) {
 	log.info("udp server received: '" + sMsg + "' from " + rinfo.address + ":" + rinfo.port);
 	var msg = JSON.parse(sMsg);
+	
+	// add expire timestamp to the message
+	msg.expire = Date.now() + parseInt(config.queue.expire);
 
 	if(msg && msg.type == config.udp.message.type.advertise) {
 		udpClient.advertisement(getAdvertisement(), function(result) {
@@ -87,30 +90,42 @@ function hasTypeAdvertise(element) {
 function hasTypePing(element) {
 	return element.type == config.udp.message.type.ping;
 }
+function hasExpired(element) {
+	return element.expire > Date.now();
+}
+
 function getAdvertisement() {
+	var urlPrefix = "http://" + util.api_host() + ":" + util.api_port();
 	var advert = 
-		{
-			type: config.udp.message.type.advertisement, 
-			advertisement: 
+	{
+		type: config.udp.message.type.advertisement, 
+		advertisement: 
+			{
+				api_server: 
 				{
-					api_server: 
-					{
-						host: util.api_host(),
-						port: util.api_port()
-					},
-					endpoints:
-					[
-						{
-							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/ping"
-						},
-						{
-							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/messages"
-						},
-						{
-							operation: "http://"+util.api_host()+":"+util.api_port()+"/api/advertise"
-						},
-					]
+					host: util.api_host(),
+					port: util.api_port()
 				},
-		};
+				endpoints:
+				[
+					{
+						operation: urlPrefix + "/api/ping"
+					},
+					{
+						operation: urlPrefix + "/api/messages"
+					},
+					{
+						operation: urlPrefix + "/api/advertise"
+					},
+				]
+			},
+	};
 	return advert;
 }
+
+/* clean queue due to expire date */
+setInterval(function () {
+	var sizeBefore = queue.length;
+	queue = queue.filter(hasExpired);
+	log.debug('cleaning queue... %s elements removed - left %s elements', sizeBefore - queue.length, queue.length);
+}, parseInt(config.queue.expire));

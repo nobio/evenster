@@ -16,5 +16,11 @@ module.exports = {
 		log.info('local ip address: %s', ip.address());
 		log.info('host name: %s running on os "%s", platform "%s"', os.hostname(), os.type(), os.platform());
 		log.info('CPU: "%s", release "%s", uptime: "%s", load: "%s"', os.arch(), os.release(), os.uptime(), os.loadavg())
-	}	
+	},
+	
+	sleep: function sleep(millis, callback) {
+    	setTimeout(function() {
+    		callback();
+    	}, millis);
+	},
 }
