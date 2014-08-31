@@ -60,7 +60,7 @@ describe('#message queue', function() {
 		assert.equal(msg.type, 'TEST-DO-NOT-USE-2');
 		
 		msg = udpServer.shift();
-		assert.equal(undefined, msg, 'reading from an empty queueu must return undefined value but returned %s', msg);
+		assert.equal(undefined, msg, 'reading from an empty queue must return undefined value but returned %s', msg);
 		
 		done();
 	});
