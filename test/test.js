@@ -24,7 +24,7 @@ describe('#ping()', function() {
 describe('#message queue', function() {
 	it('after sending a ping we expect at least one ping message in servers message queue', function(done) {
 		udpClient.ping(function(result) {
-			sleep(100, function() {
+			sleep(500, function() {
 				var found, msg;
 				var messages = udpServer.getMessages();
 				for (var i = 0; i < messages.length; i++) {
@@ -105,7 +105,7 @@ describe('#advertise', function() {
 		udpClient.ping();
 		udpClient.ping();
 
-		sleep(100, function() { // give the server the chance to fetch the messages
+		sleep(500, function() { // give the server the chance to fetch the messages
 			var messages = udpServer.getMessagesByType(config.udp.message.type.advertise);
 			log.debug("Advertise messages found: %s", JSON.stringify(messages));
 			assert.equal(2, messages.length)
