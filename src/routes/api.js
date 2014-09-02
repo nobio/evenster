@@ -17,15 +17,23 @@ router.get('/', function(req, res) {
 
 /* a ping message is sent via broadcast; we expect to initiate a pong answer from all listening evenster servers */
 router.get('/ping', function(req, res) {
-	udpClient.ping(function(result) {
-		res.send(result);
+	udpClient.ping(function(err) {
+		if(err) {
+			res.send(500, err.message);
+		} else {
+			res.send(200);
+		}
 	});
 });
 
 /* answer to ping sent as broadcast */
 router.get('/pong', function(req, res) {
-	udpClient.pong(function(result) {
-		res.send(result);
+	udpClient.pong(function(err) {
+		if(err) {
+			res.send(500, err.message);
+		} else {
+			res.send(200);
+		}
 	});
 });
 
@@ -33,8 +41,12 @@ router.get('/pong', function(req, res) {
    to receive all necessary data to connect to the evenster server(s); 
    please mind that all servers might respond since this initiates a broadcast */
 router.get('/advertise', function(req, res) {
-	udpClient.advertise(function(result) {
-		res.send(result);
+	udpClient.advertise(function(err) {
+		if(err) {
+			res.send(500, err.message);
+		} else {
+			res.send(200);
+		}
 	});
 });
 

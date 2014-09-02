@@ -30,11 +30,7 @@ module.exports = {
 	ping: function ping(callback) {
 		this.sendAsync({'type':config.udp.message.type.ping}, function(err) {
 			if(callback) {
-				if(err) {
-					callback({'errorcode': '500', 'message': err});
-				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': 'ok'});
-				}
+				callback(err);
 			}
 		});
 	},
@@ -42,11 +38,7 @@ module.exports = {
 	pong: function pong(callback) {
 		this.sendAsync({'type':config.udp.message.type.pong}, function(err) {
 			if(callback) {
-				if(err) {
-					callback({'errorcode': '500', 'message': err});
-				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': 'ok'});
-				}
+				callback(err);
 			}
 		});
 	},
@@ -58,11 +50,7 @@ module.exports = {
 	advertise: function advertise(callback) {
 		this.sendAsync({'type':config.udp.message.type.advertise}, function(err) {
 			if(callback) {
-				if(err) {
-					callback({'errorcode': '500', 'message': err});
-				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': 'ok'});
-				}
+				callback(err);
 			}
 		});
 	},
@@ -74,11 +62,7 @@ module.exports = {
 	advertisement: function advertisement(advertisement, callback) {
 		this.sendAsync(advertisement, function(err) {
 			if(callback) {
-				if(err) {
-					callback({'errorcode': '500', 'message': err});
-				} else if (callback && !err) {
-					callback({'errorcode': '0', 'message': 'ok'});
-				}
+				callback(err);
 			}
 		});
 	},
