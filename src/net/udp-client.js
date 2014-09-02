@@ -17,7 +17,9 @@ module.exports = {
 		var client = multicastServer.createSocket("udp4");
 		client.send(message, 0, message.length, parseInt(config.udp.server.port), config.udp.server.host, function(err, bytes) {
 			client.close();
-			callback(err);
+			if(callback) {
+				callback(err);
+			}
 		});
 	},
 	

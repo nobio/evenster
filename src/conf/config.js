@@ -14,7 +14,7 @@ module.exports = {
 		}
 	},
 	"queue" : {
-		"expire": "20000" // 20 sec
+		"expire": "60000" // 60 sec
 	},
 	"logger": {
 		"api": "logs/api.log",
