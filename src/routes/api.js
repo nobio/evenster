@@ -37,3 +37,18 @@ router.get('/messages', function(req, res) {
 	res.send(msgs);
 });
 
+router.post('/event', function(req, res) {
+	res.send('post /event');
+});
+
+router.get('/event', function(req, res) {
+	res.send('get /event');
+});
+
+router.get('/event:id', function(req, res) {
+	res.send('get /event/:id');
+});
+
+router.get('/event/filter:criteria', function(req, res) {
+	res.send('get /event/filter:criteria');
+});
