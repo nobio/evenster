@@ -3,7 +3,6 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"tstxxx":	 "node ./bin/ping",
 		"start": "node ./bin/www",
 		"test": "./node_modules/mocha/bin/mocha --recursive -R xunit test/ > test-reports.xml"
 	},
