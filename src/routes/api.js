@@ -5,6 +5,7 @@ var logger = require('log'), log = new logger(config.logger.level);
 var express = require('express');
 var udpClient = require('../net/udp-client');
 var udpServer = require('../net/udp-server');
+var eventHandler = require('./event_handler');
 var router = express.Router();
 
 module.exports = router;
