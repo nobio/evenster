@@ -71,12 +71,12 @@ router.post('/event', function(req, res) {
 });
 
 /* read a special event by it's id */
-router.get('/event:id', function(req, res) {
-	res.send('get /event/:id');
+router.get('/event/:id', function(req, res) {
+	res.send('get /event with id="' + req.params.id +'"');
 });
 
 /* get a list of events by criteria */
-router.get('/event/filter:criteria', function(req, res) {
+router.get('/event/filter/:criteria', function(req, res) {
 	// req.body.criteria
-	res.send('get /event/filter:criteria');
+	res.send('get /event/filter/:criteria');
 });

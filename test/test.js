@@ -14,9 +14,8 @@ describe('#ping()', function() {
 	});
 	
 	it('async ping should return return no error (code=200)', function(done) {
-		udpClient.ping(function(result) {
-			assert.equal('0', result.errorcode);
-			assert.equal('ok', result.message);
+		udpClient.ping(function(err) {
+			assert.equal(undefined, err);
 			done();
 		});
 	});
