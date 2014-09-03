@@ -2,23 +2,22 @@
 var logger = require('log'), log = new logger('debug');
 var request = require('request');
 
-request.post('http://evenster-c9-nobio.c9.io/api/event', 
-	{
-		form: {
-			event: {
-				header: {
-					application_id: 'calvin_de',
-					source_host: '10.207.131.20',
-					timestamp: 123456367,
-					event_type: 'cash-transfer'
-				},
-				payload: {
-					data: '<request><test>asdasd</test></request>'
-				}
+request.post('http://evenster-c9-nobio.c9.io/api/event', {
+	form: {
+		event: {
+			header: {
+				application_id: 'calvin_de',
+				source_host: '10.207.131.20',
+				timestamp: 123456367,
+				event_type: 'cash-transfer'
+			},
+			payload: {
+				data: '<request><test>asdasd</test></request>'
 			}
 		}
-	}, function (error, response, body) {
+	}
+}, function (error, response, body) {
 	if (!error && response.statusCode == 200) {
-		console.log(body)
+		console.log(body);
 	}
 });
