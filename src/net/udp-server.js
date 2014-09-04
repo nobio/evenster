@@ -117,6 +117,12 @@ function getAdvertisement() {
 					{
 						operation: urlPrefix + "/api/advertise"
 					},
+					{
+						operation: urlPrefix + "/api/event/:id"
+					},
+					{
+						operation: urlPrefix + "/api/event/filter/:criteria"
+					},
 				]
 			},
 	};
