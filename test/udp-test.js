@@ -5,22 +5,8 @@ var assert = require("assert");
 var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
 var util = require("../src/util");
+var eventHandler = require("../src/routes/event_handler.js");
 
-describe('#ping()', function() {
-	it('sync ping should return no return value', function(done) {
-		var httpcode = udpClient.ping();
-		assert.equal(undefined, httpcode);
-		done();
-	});
-	
-	it('async ping should return return no error (code=200)', function(done) {
-		udpClient.ping(function(err) {
-			assert.equal(undefined, err);
-			done();
-		});
-	});
-});
-		
 describe('#message queue', function() {
 	it('after sending a ping we expect at least one ping message in servers message queue', function(done) {
 		udpClient.ping(function(result) {
@@ -65,7 +51,6 @@ describe('#message queue', function() {
 		done();
 	});
 
-	it('push and pop (LIFO) a value to the queue', function(done) {
 		udpServer.getMessages().length = 0; // reset the queue
 
 		assert.equal(0, udpServer.getMessages().length);
@@ -84,6 +69,7 @@ describe('#message queue', function() {
 		assert.equal(msg.type, 'TEST-DO-NOT-USE-1');
 		
 		msg = udpServer.pop();
+	it('push and pop (LIFO) a value to the queue', function(done) {
 		assert.equal(undefined, msg, 'reading from an empty queueu must return undefined value but returned %s', msg);
 		
 		done();
