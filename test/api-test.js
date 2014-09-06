@@ -5,7 +5,8 @@ var assert = require("assert");
 var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
 var util = require("../src/util");
-var eventHandler = require("../src/routes/event_handler.js");
+var eventHandler = require("../src/routes/event_handler");
+var validator = require("../src/routes/validator");
 
 describe('#ping()', function() {
 	it('sync ping should return no return value', function(done) {
@@ -28,6 +29,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
 				timestamp: 123456367,
 				event_type: 'cash-transfer'
@@ -37,8 +39,27 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.equal(undefined, err, "we expect an error on an intentionallyinvalid message");	
+			done();
+		});
+	});
+	it('send an invalid object: blank event.header.application_id; should be rejected', function(done) {
+		var event =
+		{event: {
+			header: {
+				//application_id: 'calvin_de',
+				source_host: '10.207.131.20',
+				timestamp: 123456367,
+				event_type: 'cash-transfer'
+			},
+			payload: {
+				data: '<request><test>asdasd</test></request>'
+			}
+		}};
+		
+		validator.validate(event, function(err) {
+			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
 	});
@@ -46,6 +67,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				//source_host: '10.207.131.20',
 				timestamp: 123456367,
 				event_type: 'cash-transfer'
@@ -55,7 +77,7 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -64,6 +86,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
 				//timestamp: 123456367,
 				event_type: 'cash-transfer'
@@ -73,7 +96,7 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -82,6 +105,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
 				timestamp: 'Hallo',
 				event_type: 'cash-transfer'
@@ -91,7 +115,7 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -100,6 +124,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
 				timestamp: 123456367,
 				//event_type: 'cash-transfer'
@@ -109,7 +134,7 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -118,6 +143,7 @@ describe('#validate()', function() {
 		var event =
 		{event: {
 			header: {
+				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
 				timestamp: 123456367,
 				event_type: 'cash-transfer'
@@ -127,7 +153,7 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -143,8 +169,30 @@ describe('#validate()', function() {
 			}
 		}};
 		
-		eventHandler.validate(event, function(err) {
+		validator.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
+			done();
+		});
+	});
+});
+		
+describe('#store()', function() {
+	it('send an valid object; should not be rejected', function(done) {
+		var event =
+		{event: {
+			header: {
+				application_id: 'calvin_de',
+				source_host: '10.207.131.20',
+				timestamp: 123456367,
+				event_type: 'cash-transfer'
+			},
+			payload: {
+				data: '<request><test>asdasd</test></request>'
+			}
+		}};
+		
+		eventHandler.storeEvent(event, function(err) {
+			assert.equal(undefined, err, "we expect an error on an intentionallyinvalid message");	
 			done();
 		});
 	});
