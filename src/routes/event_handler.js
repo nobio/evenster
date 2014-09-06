@@ -11,7 +11,7 @@ module.exports = {
 	 * validates the event object and stores it
 	 */
 	storeEvent: function storeEvent(event, callback) {
-		validateEvent(event, function(err) {
+		validate(event, function(err) {
 			if(err) {
 				callback(err);
 			}
@@ -20,7 +20,7 @@ module.exports = {
 		});
 	},
 
-	validateEvent: function (event, callback) {
+	validate: function (event, callback) {
 		var value;
 		var err;
 		

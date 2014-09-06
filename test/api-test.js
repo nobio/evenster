@@ -23,7 +23,7 @@ describe('#ping()', function() {
 });
 		
 
-describe('#validateEvent()', function() {
+describe('#validate()', function() {
 	it('send an valid object; should not be rejected', function(done) {
 		var event =
 		{event: {
@@ -37,7 +37,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.equal(undefined, err, "we expect an error on an intentionallyinvalid message");	
 			done();
 		});
@@ -55,7 +55,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -73,7 +73,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -91,7 +91,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -109,7 +109,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -127,7 +127,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
@@ -143,7 +143,7 @@ describe('#validateEvent()', function() {
 			}
 		}};
 		
-		eventHandler.validateEvent(event, function(err) {
+		eventHandler.validate(event, function(err) {
 			assert.notEqual(undefined, err, "we expect an error on an intentionally invalid message");	
 			done();
 		});
