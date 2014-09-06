@@ -11,7 +11,7 @@ module.exports = {
 	 * validates the event object and stores it
 	 */
 	storeEvent: function storeEvent(event, callback) {
-		validate(event, function(err) {
+		this.validate(event, function(err) {
 			if(err) {
 				callback(err);
 			}
@@ -61,23 +61,3 @@ function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function Assert() {
-	this.equal = function(val_1, val_2, msg) {
-		if(!msg) msg = 'values are supposed to be equal but ' + val_1 + " != " + val_2;
-		if(val_1 != val_2 ) {
-			throw new Error('values are supposed to be equal but ' + val_1 + " != " + val_2);
-		}
-	};
-	this.notEqual = function(val_1, val_2, msg) {
-		if(!msg) msg = 'values are supposed to be not equal but ' + val_1 + " == " + val_2;
-		if(val_1 == val_2 ) {
-			throw new Error(msg);
-		}
-	};
-	this.isNumeric = function(n, msg) {
-		if(!msg) msg = n + ' is not a numeric value';
-  		if(!isNaN(parseFloat(n)) && isFinite(n)) {
-  			throw new Error(msg);
-  		}
-	}
-}
