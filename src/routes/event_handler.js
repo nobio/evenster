@@ -1,6 +1,5 @@
 var config = require('../../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
-var assert = require("assert");
 var validator = require("./validator");
 var persistence = require("./persistence");
 

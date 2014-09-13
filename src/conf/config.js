@@ -20,6 +20,10 @@ module.exports = {
 		"api": "logs/api.log",
 		"exception": "logs/exceptions.log",
 		"level": "debug"
+	},
+	"persistence": {
+		"path_to_db": "./data",
+		"flush_interval": "5000"
 	}
 };
 
