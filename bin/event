@@ -5,6 +5,7 @@ var util = require('../src/util');
 var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
 var request = require('request');
+var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß0123456789';
 
 // get the right address to send events to using the udp-client
 udpClient.advertise(function(err) {
@@ -30,7 +31,7 @@ udpClient.advertise(function(err) {
 						event_type: 'cash-transfer'
 					},
 					payload: {
-						data: '<request><test>asdasd</test></request>'
+						data: '<request><test>'+getRandomString(15)+'</test></request>'
 					}
 				}
 			}
@@ -50,3 +51,10 @@ udpClient.advertise(function(err) {
 	});
 });
 
+function getRandomString(length) {
+	var str, idx;
+	for(var n=0; n<length; n++) {
+		idx = Math.floor(Math.random() * alphabet.length) + 1;
+		str += alphabet[idx];
+	}
+}
