@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var config = require('../../src/conf/config.js');
+var config = require('../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
 var util = require('../src/util');
 var udpClient = require('../src/net/udp-client');
@@ -12,16 +12,15 @@ udpClient.advertise(function(err) {
 		throw err;
 	}
 	util.sleep(300, function() { // give the server the chance to fetch the messages
-		var messages = udpServer.getMessagesByType(config.udp.message.type.advertise);
+		var messages = udpServer.getMessagesByType(config.udp.message.type.advertisement);
 		if(!messages || messages.length === 0) {
 			throw new Error('no response from udp server');
 		}
-		var apiHost = messages[0].advert.advertisement.api_server.api_host + ':' + messages[0].advert.advertisement.api_server.api_port;
-
+		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
 	var n = 0;
-	while(n<10000) {
+	while(n<10) {
 		n++;
-		request.post(apiHost + /api/event', {
+		request.post(messages[0].advertisement.event_post_endpoint, {
 			form: {
 				event: {
 					header: {
@@ -36,7 +35,9 @@ udpClient.advertise(function(err) {
 				}
 			}
 		}, function (err, response, body) {
-			if (!err && response.statusCode == 200) {
+			if (!err && response) {
+				console.log(body);
+			} else if (err && !response) {
 				console.log(body);
 			} else {
 				console.log(response.statusCode);

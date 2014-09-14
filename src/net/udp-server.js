@@ -106,6 +106,7 @@ function getAdvertisement() {
 					host: util.api_host(),
 					port: util.api_port()
 				},
+				event_post_endpoint: urlPrefix + "/api/event",
 				endpoints:
 				[
 					{
