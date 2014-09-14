@@ -1,32 +1,51 @@
 #!/usr/bin/env node
-var logger = require('log'), log = new logger('debug');
+var config = require('../../src/conf/config.js');
+var logger = require('log'), log = new logger(config.logger.level);
 var util = require('../src/util');
+var udpClient = require('../src/net/udp-client');
+var udpServer = require('../src/net/udp-server');
 var request = require('request');
 
-var n = 0;
-while(n<10000) {
-	n++;
-	request.post('http://evenster-c9-nobio.c9.io/api/event', {
-		form: {
-			event: {
-				header: {
-					application_id: 'calvin_de',
-					source_host: '10.207.131.20',
-					timestamp: new Date().getTime(),
-					event_type: 'cash-transfer'
-				},
-				payload: {
-					data: '<request><test>asdasd</test></request>'
+// get the right address to send events to using the udp-client
+udpClient.advertise(function(err) {
+	if(err) {
+		throw err;
+	}
+	util.sleep(300, function() { // give the server the chance to fetch the messages
+		var messages = udpServer.getMessagesByType(config.udp.message.type.advertise);
+		if(!messages || messages.length === 0) {
+			throw new Error('no response from udp server');
+		}
+		var apiHost = messages[0].advert.advertisement.api_server.api_host + ':' + messages[0].advert.advertisement.api_server.api_port;
+
+	var n = 0;
+	while(n<10000) {
+		n++;
+		request.post(apiHost + /api/event', {
+			form: {
+				event: {
+					header: {
+						application_id: 'calvin_de',
+						source_host: '10.207.131.20',
+						timestamp: new Date().getTime(),
+						event_type: 'cash-transfer'
+					},
+					payload: {
+						data: '<request><test>asdasd</test></request>'
+					}
 				}
 			}
-		}
-	}, function (err, response, body) {
-		if (!err && response.statusCode == 200) {
-			console.log(body);
-		} else {
-			console.log(response.statusCode);
-			console.log(body);
-			//console.error(response);
-		}
+		}, function (err, response, body) {
+			if (!err && response.statusCode == 200) {
+				console.log(body);
+			} else {
+				console.log(response.statusCode);
+				console.log(body);
+				//console.error(response);
+			}
+		});
+	}
+		
 	});
-}
+});
+

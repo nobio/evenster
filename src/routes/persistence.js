@@ -64,7 +64,7 @@ function createEventModel(db) {
 		buffered: true, 
 		type: 'cached_key_map', 
 		flush_interval: config.persistence.flush_interval,
-		cache_slots: 3
+		cache_slots: 1000
 	});
 	model.property('application_id', 'string', { required: true, maxLength: 100 });
 	model.property('source_host', 'string', { required: true, maxLength: 100 });
