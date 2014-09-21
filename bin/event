@@ -6,6 +6,7 @@ var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
 var request = require('request');
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß0123456789';
+
 /**
  * creates a random string
  */
@@ -27,6 +28,7 @@ function getRandomString(length) {
 	}
 	return str;
 }
+
 // get the right address to send events to using the udp-client
 udpClient.advertise(function(err) {
 log.error(err);
@@ -39,6 +41,8 @@ log.error(err);
 			throw new Error('no response from udp server');
 		}
 		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
+		udpServer.close();
+
 		var n = 0;
 		while(n<1) {
 			n++;
@@ -52,26 +56,23 @@ log.error(err);
 							event_type: 'cash-transfer'
 						},
 						payload: {
-							data: '<request><test>'+getRandomString()+'</test></request>'
+							data: '<request><test>'+getRandomString(15)+'</test></request>'
 						}
 					}
 				}
 			}, function (err, response, body) {
 				if (!err && response) {
-					console.log(body);
+					console.log('ok: %s - %s', response, body);
 				} else if (err && !response) {
-					console.log(body);
+					console.log('error_2: %s', err);
 				} else {
-					console.log(body + " " + response.statusCode);
+					console.log('ok: %s', response.statusCode);
+					console.log(body);
+					//console.error(response);
 				}
-				log.error('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 			});
-			log.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 		}
-		log.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	});
-	log.error('===========================================');
 });
 
-log.error('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
 udpServer.shutdown();
