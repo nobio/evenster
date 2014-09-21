@@ -17,7 +17,7 @@ function getRandomString() {
 /**
  * creates a random string by a given length
  */
-function getRandomString(length) {
+function getRandomStringByLength(length) {
 	if(!length) {
 		length = 5 + Math.floor(Math.random() * 20);
 	}
@@ -31,7 +31,6 @@ function getRandomString(length) {
 
 // get the right address to send events to using the udp-client
 udpClient.advertise(function(err) {
-log.error(err);
 	if(err) {
 		throw err;
 	}
@@ -75,4 +74,4 @@ log.error(err);
 	});
 });
 
-udpServer.shutdown();
+udpServer.close();
