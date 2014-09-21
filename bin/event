@@ -6,55 +6,72 @@ var udpClient = require('../src/net/udp-client');
 var udpServer = require('../src/net/udp-server');
 var request = require('request');
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß0123456789';
+/**
+ * creates a random string
+ */
+function getRandomString() {
+	return getRandomStringByLength(length);
+}
 
+/**
+ * creates a random string by a given length
+ */
+function getRandomString(length) {
+	if(!length) {
+		length = 5 + Math.floor(Math.random() * 20);
+	}
+	var str='', idx;
+	for(var n=0; n<length; n++) {
+		idx = Math.floor(Math.random() * alphabet.length) + 1;
+		str += alphabet[idx];
+	}
+	return str;
+}
 // get the right address to send events to using the udp-client
 udpClient.advertise(function(err) {
+log.error(err);
 	if(err) {
 		throw err;
 	}
-	util.sleep(300, function() { // give the server the chance to fetch the messages
+	util.sleep(500, function() { // give the server the chance to fetch the messages
 		var messages = udpServer.getMessagesByType(config.udp.message.type.advertisement);
 		if(!messages || messages.length === 0) {
 			throw new Error('no response from udp server');
 		}
 		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
-	var n = 0;
-	while(n<10) {
-		n++;
-		request.post(messages[0].advertisement.event_post_endpoint, {
-			form: {
-				event: {
-					header: {
-						application_id: 'calvin_de',
-						source_host: '10.207.131.20',
-						timestamp: new Date().getTime(),
-						event_type: 'cash-transfer'
-					},
-					payload: {
-						data: '<request><test>'+getRandomString(15)+'</test></request>'
+		var n = 0;
+		while(n<1) {
+			n++;
+			request.post(messages[0].advertisement.event_post_endpoint, {
+				form: {
+					event: {
+						header: {
+							application_id: 'calvin_de',
+							source_host: '10.207.131.20',
+							timestamp: new Date().getTime(),
+							event_type: 'cash-transfer'
+						},
+						payload: {
+							data: '<request><test>'+getRandomString()+'</test></request>'
+						}
 					}
 				}
-			}
-		}, function (err, response, body) {
-			if (!err && response) {
-				console.log(body);
-			} else if (err && !response) {
-				console.log(body);
-			} else {
-				console.log(response.statusCode);
-				console.log(body);
-				//console.error(response);
-			}
-		});
-	}
-		
+			}, function (err, response, body) {
+				if (!err && response) {
+					console.log(body);
+				} else if (err && !response) {
+					console.log(body);
+				} else {
+					console.log(body + " " + response.statusCode);
+				}
+				log.error('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+			});
+			log.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+		}
+		log.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	});
+	log.error('===========================================');
 });
 
-function getRandomString(length) {
-	var str, idx;
-	for(var n=0; n<length; n++) {
-		idx = Math.floor(Math.random() * alphabet.length) + 1;
-		str += alphabet[idx];
-	}
-}
+log.error('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+udpServer.shutdown();
