@@ -18,6 +18,7 @@ alfred.open(PATH_TO_DB, function(err, db) {
   	}
 	log.info('alfred database is open...');
 	Event = createEventModel(db);
+	log.info('Event: %s', Event);
 
 	db.on('error', function(err) {
   		log.info(err);
@@ -33,7 +34,6 @@ alfred.open(PATH_TO_DB, function(err, db) {
 	});
 	
 });
-
 
 /* this is a persistence wrapper; may it be linked to a database or just an in-memory db or a map */
 module.exports = {
@@ -67,10 +67,10 @@ function createEventModel(db) {
 		cache_slots: 1000
 	});
 	model.property('application_id', 'string', { required: true, maxLength: 100 });
-	model.property('source_host', 'string', { required: true, maxLength: 100 });
-	model.property('timestamp', 'string', { required: true });
-	model.property('event_type', 'string', { required: true });
-	model.property('payload', 'string', { required: true });
+	model.property('source_host',    'string', { required: true, maxLength: 100 });
+	model.property('timestamp',      'number', { required: true });
+	model.property('event_type',     'string', { required: true });
+	model.property('payload',        'string', { required: true });
 	
 	model.index('application_id', function(event) {
 		return event.application_id;

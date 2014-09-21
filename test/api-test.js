@@ -190,9 +190,19 @@ describe('#store()', function() {
 				data: '<request><test>asdasd</test></request>'
 			}
 		}};
-		
+		util.sleepSync(5000);
+
 		eventHandler.storeEvent(event, function(err) {
-			assert.equal(undefined, err, "we expect an error on an intentionallyinvalid message");	
+			assert.equal(undefined, err);	
+		});
+		eventHandler.storeEvent(event, function(err) {
+			assert.equal(undefined, err);	
+		});
+		eventHandler.storeEvent(event, function(err) {
+			assert.equal(undefined, err);	
+		});
+		eventHandler.storeEvent(event, function(err) {
+			assert.equal(undefined, err);	
 			done();
 		});
 	});
