@@ -12,8 +12,13 @@ module.exports = {
 		return process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || '3000';
 	},
 
+   api_domain: function api_domain() {
+		return 'http://' + this.api_host() + ":" + this.api_port() + '/api';
+	},
+
 	dumpEnv: function dumpEnv() {
 		log.info('local ip address: %s', ip.address());
+		log.info('local domain: %s', this.api_domain());
 		log.info('host name: %s running on os "%s", platform "%s"', os.hostname(), os.type(), os.platform());
 		log.info('CPU: "%s", release "%s", uptime: "%s", load: "%s"', os.arch(), os.release(), os.uptime(), os.loadavg())
 	},

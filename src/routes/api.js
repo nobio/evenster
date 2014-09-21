@@ -12,7 +12,7 @@ module.exports = router;
 
 /* Here goes the API */
 router.get('/', function(req, res) {
-	res.send("'index', { title: 'XExpress' }");
+	res.send(udpServer.getAdvertisement());
 });
 
 /* a ping message is sent via broadcast; we expect to initiate a pong answer from all listening evenster servers */

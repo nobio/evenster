@@ -7,17 +7,20 @@ var udpClient = require('../src/net/udp-client');
 var request = require('request');
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß0123456789';
 
+
+util.dumpEnv();
+
 /**
  * creates a random string
  */
 function getRandomString() {
-	return getRandomStringByLength(length);
+	return getRandomStringByLength(10);
 }
 
 /**
  * creates a random string by a given length
  */
-function getRandomString(length) {
+function getRandomStringByLength(length) {
 	if(!length) {
 		length = 5 + Math.floor(Math.random() * 20);
 	}
@@ -31,7 +34,6 @@ function getRandomString(length) {
 
 // get the right address to send events to using the udp-client
 udpClient.advertise(function(err) {
-log.error(err);
 	if(err) {
 		throw err;
 	}
@@ -44,10 +46,11 @@ log.error(err);
 		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
 		udpServer.close();
 */
+		log.info('posting events to %s', util.api_domain() + '/event');
 		var n = 0;
-		while(n<100) {
+		while(n<10) {
 			n++;
-			request.post(messages[0].advertisement.event_post_endpoint, {
+			request.post(util.api_domain() + '/event', {
 //			request.post(messages[0].advertisement.event_post_endpoint, {
 				form: {
 					event: {
