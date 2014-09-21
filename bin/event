@@ -3,7 +3,7 @@ var config = require('../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
 var util = require('../src/util');
 var udpClient = require('../src/net/udp-client');
-var udpServer = require('../src/net/udp-server');
+//var udpServer = require('../src/net/udp-server');
 var request = require('request');
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß0123456789';
 
@@ -36,17 +36,19 @@ log.error(err);
 		throw err;
 	}
 	util.sleep(500, function() { // give the server the chance to fetch the messages
+/*
 		var messages = udpServer.getMessagesByType(config.udp.message.type.advertisement);
 		if(!messages || messages.length === 0) {
 			throw new Error('no response from udp server');
 		}
 		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
 		udpServer.close();
-
+*/
 		var n = 0;
-		while(n<1) {
+		while(n<100) {
 			n++;
 			request.post(messages[0].advertisement.event_post_endpoint, {
+//			request.post(messages[0].advertisement.event_post_endpoint, {
 				form: {
 					event: {
 						header: {
@@ -75,4 +77,3 @@ log.error(err);
 	});
 });
 
-udpServer.shutdown();
