@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+//var logger = require('log'), log = new logger('debug');
+
+var udpClient = require('../src/net/udp-client');
+udpClient.advertise();
+
