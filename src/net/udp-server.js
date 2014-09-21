@@ -8,9 +8,12 @@ var queue = new Array();
 
 /* UDP-server (broadcast) */
 var socket = multicastServer.createSocket("udp4");
+log.info("trying to bind udp server to " + config.udp.server.host + ":" + parseInt(config.udp.server.port));
+socket.bind(parseInt(config.udp.server.port), config.udp.server.host);
 
 socket.on("error", function (err) {
 	log.info("udp server error:\n" + err.stack);
+	socket.dropMembership(config.udp.server.host);
 	socket.close();
 });
 
@@ -46,8 +49,9 @@ socket.on("listening", function () {
 	log.info("udp server listening " + address.address + ":" + address.port);
 });
 
-log.info("trying to bind udp server to " + config.udp.server.host + ":" + parseInt(config.udp.server.port));
-socket.bind(parseInt(config.udp.server.port), config.udp.server.host);
+socket.on("close", function() {
+	log.info('closing udp socket done');	
+});
 
 /* export some functions typically for a udp client */
 module.exports = {
@@ -77,6 +81,11 @@ module.exports = {
 		
 	pop: function pop() { // LIFO
 		return queue.pop();
+	},
+	
+	close: function close() {
+		log.info('closing udp socket...');
+		socket.close();	
 	},
 }
 

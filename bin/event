@@ -18,36 +18,36 @@ udpClient.advertise(function(err) {
 			throw new Error('no response from udp server');
 		}
 		log.info('sending events to %s', messages[0].advertisement.event_post_endpoint);
-	var n = 0;
-	while(n<10) {
-		n++;
-		request.post(messages[0].advertisement.event_post_endpoint, {
-			form: {
-				event: {
-					header: {
-						application_id: 'calvin_de',
-						source_host: '10.207.131.20',
-						timestamp: new Date().getTime(),
-						event_type: 'cash-transfer'
-					},
-					payload: {
-						data: '<request><test>'+getRandomString(15)+'</test></request>'
+		udpServer.close();
+		var n = 0;
+		while(n<1) {
+			n++;
+			request.post(messages[0].advertisement.event_post_endpoint, {
+				form: {
+					event: {
+						header: {
+							application_id: 'calvin_de',
+							source_host: '10.207.131.20',
+							timestamp: new Date().getTime(),
+							event_type: 'cash-transfer'
+						},
+						payload: {
+							data: '<request><test>'+getRandomString(15)+'</test></request>'
+						}
 					}
 				}
-			}
-		}, function (err, response, body) {
-			if (!err && response) {
-				console.log(body);
-			} else if (err && !response) {
-				console.log(body);
-			} else {
-				console.log(response.statusCode);
-				console.log(body);
-				//console.error(response);
-			}
-		});
-	}
-		
+			}, function (err, response, body) {
+				if (!err && response) {
+					console.log('ok: %s - %s', response, body);
+				} else if (err && !response) {
+					console.log('error_2: %s', err);
+				} else {
+					console.log('ok: %s', response.statusCode);
+					console.log(body);
+					//console.error(response);
+				}
+			});
+		}
 	});
 });
 
