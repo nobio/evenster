@@ -48,7 +48,7 @@ udpClient.advertise(function(err) {
 */
 		log.info('posting events to %s', util.api_domain() + '/event');
 		var n = 0;
-		while(n<10) {
+		while(n<500) {
 			n++;
 			request.post(util.api_domain() + '/event', {
 //			request.post(messages[0].advertisement.event_post_endpoint, {
@@ -66,12 +66,12 @@ udpClient.advertise(function(err) {
 					}
 				}
 			}, function (err, response, body) {
-				if (!err && response) {
-					console.log('ok: %s - %s', response, body);
+				if (!err && !body) {
+					console.log('ok: %s - %s', JSON.stringify(response), err);
 				} else if (err && !response) {
 					console.log('error_2: %s', err);
 				} else {
-					console.log('ok: %s', response.statusCode);
+					console.log('nok: %s', response.statusCode);
 					console.log(body);
 					//console.error(response);
 				}

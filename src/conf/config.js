@@ -19,7 +19,7 @@ module.exports = {
 	"logger": {
 		"api": "logs/api.log",
 		"exception": "logs/exceptions.log",
-		"level": "info"
+		"level": "debug"
 	},
 	"persistence": {
 		"path_to_db": "./data",

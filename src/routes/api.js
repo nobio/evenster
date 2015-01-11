@@ -80,3 +80,15 @@ router.get('/event/filter/:criteria', function(req, res) {
 	// req.body.criteria
 	res.send('get /event/filter/:criteria');
 });
+
+/* read all events */
+router.get('/events', function(req, res) {
+	eventHandler.loadAllEvents(req.body, function(result, err) {
+		if(err) {
+			res.send(500, err.message);
+		} else {
+			res.send(result);
+		}
+	});
+});
+

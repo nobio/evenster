@@ -29,6 +29,15 @@ module.exports = {
 		});
 		
 	},
+	
+	/**
+	 * load all events
+	 */
+	loadAllEvents: function loadAllEvents(callback) {
+		persistence.loadAll(function(result, err) {
+			callback(result, err);
+		});
+	}
 
 };
 

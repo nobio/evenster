@@ -104,7 +104,7 @@ function hasExpired(element) {
 }
 
 function getAdvertisement() {
-	var urlPrefix = "http://" + util.api_host() + ":" + util.api_port();
+	var urlPrefix = util.api_domain();
 	var advert = 
 	{
 		type: config.udp.message.type.advertisement, 
@@ -112,26 +112,36 @@ function getAdvertisement() {
 			{
 				api_server: 
 				{
+					protocol: util.api_protocol(),
 					host: util.api_host(),
 					port: util.api_port()
 				},
-				event_post_endpoint: urlPrefix + "/api/event",
+				event_post_endpoint: urlPrefix + "/event",
 				endpoints:
 				[
 					{
-						operation: urlPrefix + "/api/ping"
+						http_verb: "get",
+						operation: urlPrefix + "/ping"
 					},
 					{
-						operation: urlPrefix + "/api/messages"
+						http_verb: "get",
+						operation: urlPrefix + "/musitcast-messages"
 					},
 					{
-						operation: urlPrefix + "/api/advertise"
+						http_verb: "get",
+						operation: urlPrefix + "/advertise"
 					},
 					{
-						operation: urlPrefix + "/api/event/:id"
+						http_verb: "post",
+						operation: urlPrefix + "/event"
 					},
 					{
-						operation: urlPrefix + "/api/event/filter/:criteria"
+						http_verb: "get",
+						operation: urlPrefix + "/event/:id"
+					},
+					{
+						http_verb: "get",
+						operation: urlPrefix + "/event/filter/:criteria"
 					},
 				]
 			},

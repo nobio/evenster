@@ -25,22 +25,24 @@ app.use('/api', api);
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+    //next(err);
 });
 
 /// error handlers
 
 // development error handler
 // will print stacktrace
-console.log('Environment = %s', app.get('env'));
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
-        res.send('error', {
+        res.render('error', {
             message: err.message,
             error: err
         });
-        next(err);
     });
 }
 
@@ -48,11 +50,10 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.send('error', {
+    res.render('error', {
         message: err.message,
         error: {}
     });
 });
-
 
 module.exports = app;
