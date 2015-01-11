@@ -1,39 +1,42 @@
-var config = require('../../src/conf/config.js');
+tvar config = require('../../src/conf/config.js');
 var logger = require('log'), log = new logger(config.logger.level);
-var fs =     require('fs');
-var alfred = require('alfred');
+var mongoose = require('mongoose');
 
-var PATH_TO_DB =  config.persistence.path_to_db;
 var Event;
 
-// make sure a folder where alfred stores data exists
-if (!fs.existsSync(PATH_TO_DB)) {
-    fs.mkdirSync(PATH_TO_DB);
+//===================================== INITIALISATION =====================================//
+console.log("init mongodb database");
+
+
+var schema   = mongoose.Schema;
+
+
+// Event Model
+var Event = new schema({
+	application_id: {type: String, required: true, default: 'unknown', index: true, unique: false}, 
+	source_host:    {type: String, required: true, default: 'unknown', index: true, unique: false}, 
+	timestamp:      {type: Date, required: true, default: Date.now, index: true, unique: false}, 
+	event_type:     {type: String, required: true, default: 'unknown', index: true, unique: false}, 
+	payload:        {type: String, required: true, default: 'unknown', index: false, unique: false} 
+);
+mongoose.model('Event', Event);
+
+
+var mongodb_url = 'mongodb://event:<password>...';
+
+var options = {
+db: { 
+	native_parser: true },
+	server: { poolSize: 2 },
+	server: { socketOptions: { keepAlive: 1 } },
+	replset: { socketOptions: { keepAlive: 1 } }
 }
 
-log.info('opening alfred database...');
-alfred.open(PATH_TO_DB, function(err, db) {
-  	if (err) { 
-  		throw(err);
-  	}
-	log.info('alfred database is open...');
-	Event = createEventModel(db);
-	log.info('Event: %s', Event);
+console.log('connecting to mongodb on ' + mongodb_url + ' with options ' + JSON.stringify(options));
+mongoose.connect(mongodb_url, options);
+console.log('connected to mongodb');
 
-	db.on('error', function(err) {
-  		log.info(err);
-	});
-	db.on('key_map_attached', function(key_map_name) {
-  		log.info('key_map_attached: ' + key_map_name);
-	});
-	db.on('index_added', function(key_map_name, index_name) {
-  		log.info('index_added: ' + key_map_name + " " + index_name);
-	});
-	db.on('index_dropped', function(key_map_name, index_name) {
-  		log.info('index_dropped: ' + key_map_name + " " + index_name);
-	});
-	
-});
+//===================================== END OF INITIALISATION =====================================//
 
 /* this is a persistence wrapper; may it be linked to a database or just an in-memory db or a map */
 module.exports = {
@@ -54,51 +57,8 @@ module.exports = {
 		log.debug('new Event model filled');
 		
 		event.save(function(validationErrors) {
-			if(validationErrors) {
-				log.debug('some errors during saving an event: %s', JSON.stringify(validationErrors));
-			} else {
-				log.debug('event was successfully saved');
-			}
 			callback(validationErrors);
-		});
-	},
-	
-	/**
-	 * validates the event object and stores it
-	 * sex: {$eq: 'f'}
-	 */
-	loadAll: function loadAll(callback) {
-		Event.find({event_type: {$eq: 'cash-transfer'}}).all(function(events) {
-  			console.log('Found ' + events.length + ' events' + events);
 		});
 	}
 };
 
-function createEventModel(db) {
-	var model = db.define('Event', {
-		buffered: true, 
-		type: 'cached_key_map', 
-		flush_interval: config.persistence.flush_interval,
-		cache_slots: 1000
-	});
-	model.property('application_id', 'string', { required: true, maxLength: 100 });
-	model.property('source_host',    'string', { required: true, maxLength: 100 });
-	model.property('timestamp',      'Number', { required: true });
-	model.property('event_type',     'string', { required: true });
-	model.property('payload',        'string', { required: true });
-	
-	model.index('application_id', function(event) {
-		return event.application_id;
-	});
-	model.index('source_host', function(event) {
-		return event.source_host;
-	});
-	model.index('timestamp', function(event) {
-		return event.timestamp;
-	});
-	model.index('event_type', function(event) {
-		return event.event_type;
-	});
-
-	return model;
-}
