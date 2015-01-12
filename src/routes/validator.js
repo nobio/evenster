@@ -28,7 +28,7 @@ module.exports = {
 			
 			value = event.event.header.timestamp;
 			assert.notEqual(undefined, value, 'header.timestamp must be defined');
-			assert.ok(isNumeric(value), 'header.timestamp must be numeric');
+			assert.ok(isDate(value) || isNumeric(value), 'header.timestamp must be a date');
 		
 			value = event.event.header.source_host;
 			assert.notEqual(undefined, value, 'header.source_host must be defined');
@@ -56,5 +56,9 @@ module.exports = {
 /* ========================================================== */
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function isDate(d) {
+	return d instanceof Date && !isNaN(d.valueOf())
 }
 

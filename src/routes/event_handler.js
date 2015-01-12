@@ -14,20 +14,10 @@ module.exports = {
 	 * validates the event object and stores it
 	 */
 	storeEvent: function storeEvent(event, callback) {
-		
-		validator.validate(event, function(err) {
-			if(err) {
-				callback(err);
-			} else {
-			
-				// persist the event
-				persistence.store(event, function(err) {
-					callback(err);
-				});
-				
-			}
+		// persist the event
+		persistence.store(event, function(err) {
+			callback(err);
 		});
-		
 	},
 	
 	/**

@@ -58,7 +58,7 @@ router.get('/multicast-messages', function(req, res) {
 
 /** 
  * receives an event to store in persistence layer 
- * curl -X POST -H "Content-Type: application/json" -d '{"timestamp": "1401728167.886038", "trigger": "enter"}' http://localhost:8080/api/event
+ * curl -X POST -H "Content-Type: application/json" -d '{"event": { "header": { "application_id":"calvin_de", "event_type":"cash-transfer", "source_host": "10.207.131.20"}, "payload": {"data": "<request>MWOrdAdd</request>"}}}' http://localhost:8080/api/event
  */
 router.post('/event', function(req, res) {
 	eventHandler.storeEvent(req.body, function(err) {

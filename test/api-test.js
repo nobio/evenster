@@ -31,7 +31,7 @@ describe('#validate()', function() {
 			header: {
 				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
-				timestamp: 123456367,
+				timestamp: Date.now(),
 				event_type: 'cash-transfer'
 			},
 			payload: {
@@ -50,7 +50,7 @@ describe('#validate()', function() {
 			header: {
 				//application_id: 'calvin_de',
 				source_host: '10.207.131.20',
-				timestamp: 123456367,
+				timestamp: Date.now(),
 				event_type: 'cash-transfer'
 			},
 			payload: {
@@ -69,7 +69,7 @@ describe('#validate()', function() {
 			header: {
 				application_id: 'calvin_de',
 				//source_host: '10.207.131.20',
-				timestamp: 123456367,
+				timestamp: Date.now(),
 				event_type: 'cash-transfer'
 			},
 			payload: {
@@ -88,7 +88,6 @@ describe('#validate()', function() {
 			header: {
 				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
-				//timestamp: 123456367,
 				event_type: 'cash-transfer'
 			},
 			payload: {
@@ -183,24 +182,14 @@ describe('#store()', function() {
 			header: {
 				application_id: 'calvin_de',
 				source_host: '10.207.131.20',
-				timestamp: 123456367,
+				//timestamp: Date.now(),
 				event_type: 'cash-transfer'
 			},
 			payload: {
 				data: '<request><test>asdasd</test></request>'
 			}
 		}};
-		util.sleepSync(5000);
-
-		eventHandler.storeEvent(event, function(err) {
-			assert.equal(undefined, err);	
-		});
-		eventHandler.storeEvent(event, function(err) {
-			assert.equal(undefined, err);	
-		});
-		eventHandler.storeEvent(event, function(err) {
-			assert.equal(undefined, err);	
-		});
+//		util.sleepSync(5000);
 		eventHandler.storeEvent(event, function(err) {
 			assert.equal(undefined, err);	
 			done();

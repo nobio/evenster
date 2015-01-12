@@ -48,7 +48,7 @@ udpClient.advertise(function(err) {
 */
 		log.info('posting events to %s', util.api_domain() + '/event');
 		var n = 0;
-		while(n<500) {
+		while(n<10000) {
 			n++;
 			request.post(util.api_domain() + '/event', {
 //			request.post(messages[0].advertisement.event_post_endpoint, {
@@ -57,7 +57,7 @@ udpClient.advertise(function(err) {
 						header: {
 							application_id: 'calvin_de',
 							source_host: '10.207.131.20',
-							timestamp: new Date().getTime(),
+							timestamp: Date.now(),
 							event_type: 'cash-transfer'
 						},
 						payload: {
