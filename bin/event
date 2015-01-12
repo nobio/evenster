@@ -48,7 +48,7 @@ udpClient.advertise(function(err) {
 */
 		log.info('posting events to %s', util.api_domain() + '/event');
 		var n = 0;
-		while(n<10000) {
+		while(n<50) {
 			n++;
 			request.post(util.api_domain() + '/event', {
 //			request.post(messages[0].advertisement.event_post_endpoint, {
