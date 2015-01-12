@@ -81,13 +81,16 @@ router.get('/event/filter/:criteria', function(req, res) {
 	res.send('get /event/filter/:criteria');
 });
 
-/* read all events */
+/**
+ * read all events 
+ * curl -X GET http://localhost:8080/api/events
+ */
 router.get('/events', function(req, res) {
-	eventHandler.loadAllEvents(req.body, function(result, err) {
+	eventHandler.loadAllEvents(function(err, result) {
 		if(err) {
 			res.send(500, err.message);
 		} else {
-			res.send(result);
+			res.send('number of events: ' + result.length + '\n');
 		}
 	});
 });
